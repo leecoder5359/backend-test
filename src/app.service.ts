@@ -1,10 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { Request } from 'express';
+import {
+  IRateLimitService,
+  RATE_LIMIT_SERVICE,
+} from './rate-limit/interfaces/rate-limit.service.interface';
 
 @Injectable()
 export class AppService {
-  proxy() {
-    //API 호출
-    return true;
+  constructor(
+    @Inject(RATE_LIMIT_SERVICE) private rateLimitService: IRateLimitService,
+  ) {}
+
+  async proxy(req: Request) {
+    await this.rateLimitService.handleRequestPerUser(req);
   }
 
   /**

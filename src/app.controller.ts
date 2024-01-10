@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Request } from 'express';
 
 @Controller()
 export class AppController {
@@ -7,8 +8,8 @@ export class AppController {
 
   //프록시 처리
   @Get()
-  proxy() {
-    return this.appService.proxy();
+  proxy(@Req() req: Request) {
+    return this.appService.proxy(req);
   }
 
   @Get('challenge1')
