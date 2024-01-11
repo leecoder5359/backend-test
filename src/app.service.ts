@@ -40,7 +40,9 @@ export class AppService {
 
     const start = Date.now();
 
-    const matchCategory = categoryList.find((category) => category.name === product.keyword);
+    const matchCategory = categoryList.find(
+      (category) => category.name === product.keyword,
+    );
 
     if (!matchCategory) {
       throw new Error(`키워드(${product.keyword})에 맞는 카테고리가 없습니다.`);
@@ -66,7 +68,7 @@ export class AppService {
    * 목표
    * 옵션 이름에 나타난 특정 단어들을 주어진 단어 치환 목록을 사용하여 변경합니다.
    */
-  challenge2(): number {
+  challenge2(): any {
     const translateWordList = [
       { src: '블랙', dest: '검정색' },
       { src: '레드', dest: '빨간색' },
@@ -84,12 +86,23 @@ export class AppService {
       { id: 6, name: '레드 M' },
     ];
     [...new Array(50)].forEach((_, index) => {
-      optionList.push({ id: index + 7, name: `블랙${index + 7}` });
+      optionList.push({ id: index + 7, name: `블랙 ${index + 7}` });
     });
 
     const start = Date.now();
 
+    const updatedOptionList = optionList.map((option) => {
+      let updatedName = option.name;
+
+      translateWordList.forEach((word) => {
+        updatedName = updatedName.replace(word.src, word.dest);
+      });
+
+      return { ...option, name: updatedName };
+    });
+
     const end = Date.now();
-    return end - start;
+    console.log('실행 시간: ', end - start);
+    return updatedOptionList;
   }
 }
